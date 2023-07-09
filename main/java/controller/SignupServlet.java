@@ -27,11 +27,11 @@ public class SignupServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User user = User.builder()
-					.name(request.getParameter("signupId"))
-					.id(request.getParameter("signupPw"))
+					.name(request.getParameter("signupName"))
+					.id(request.getParameter("signupId"))
+					.pw(request.getParameter("signupPw"))
 					.email(request.getParameter("signupEmail"))
 					.build();
-		
 		try {
 			if(userService.createUser(user)) {
 				System.out.println("회원가입 성공!");
