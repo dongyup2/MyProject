@@ -29,4 +29,9 @@ public class UserServiceImpl implements UserService{
 		return userDao.countByName(name) > 0;
 	}
 
+	@Override
+	public int loginCheck(String id, String pw) throws Exception {
+		return userDao.loginCheck(id, pw);
+	}
+
 }

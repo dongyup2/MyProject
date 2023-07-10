@@ -35,6 +35,7 @@ public class SignupServlet extends HttpServlet {
 		try {
 			if(userService.createUser(user)) {
 				System.out.println("회원가입 성공!");
+				response.sendRedirect("");
 			}else {
 				System.out.println("회원가입 실패!");
 			}
@@ -42,5 +43,4 @@ public class SignupServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-
 }

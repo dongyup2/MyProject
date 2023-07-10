@@ -30,8 +30,8 @@ public class IdCheckServlet extends HttpServlet {
 		try {
 			boolean isValid = userService.idCheckUser(param_id);	
 			System.out.println(isValid);
-			out.println(isValid ? "0" : "1");
-		} catch (Exception e) {
+			out.print(isValid ? "1" : "0");
+		} catch (Exception e) {	
 			e.printStackTrace();
 		}	   
 	}    

@@ -106,4 +106,33 @@ public class UserDaoImpl implements UserDao{
 		
 		return result;
 	}
+
+	@Override
+	public int loginCheck(String id, String pw) throws Exception {
+		int result = 0;
+		sql = "SELECT COUNT(*) FROM omok_user_regist WHERE id=? AND pw=?";
+		try {
+			con = pool.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, pw);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				result = rs.getInt(1);	
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(con != null) con.close();
+				if(pstmt != null) pstmt.close();
+				if(rs != null) rs.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
 }

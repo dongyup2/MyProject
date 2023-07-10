@@ -31,7 +31,7 @@ public class NameCheckServlet extends HttpServlet {
 		try {
 			boolean isValid = userService.nameCheckUser(param_Name);
 			System.out.println(isValid);
-			out.println(isValid ? "0" : "1");
+			out.print(isValid ? "1" : "0");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}	   
