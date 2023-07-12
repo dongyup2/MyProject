@@ -8,6 +8,7 @@ import jdbc.DBcon;
 import services.UserService;
 import services.UserServiceImpl;
 import vo.User;
+import vo.UserGameInfo;
 
 public class UserDaoImpl implements UserDao{
 	private DBcon pool;
@@ -108,18 +109,43 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	@Override
-	public int loginCheck(String id, String pw) throws Exception {
-		int result = 0;
-		sql = "SELECT COUNT(*) FROM omok_user_regist WHERE id=? AND pw=?";
+	public UserGameInfo loginCheck(String id, String pw) throws Exception {
+		UserGameInfo usergameinfo = null;
+		sql = "SELECT\r\n"
+				+ "  u.mno AS user_id, u.NAME AS user_name,\r\n"
+				+ "  u.email AS email, u.regdate AS registration_date,\r\n"
+				+ "  COUNT(g.record_id) AS total_games,\r\n"
+				+ "  SUM(g.win) AS wins, SUM(g.lose) AS losses,\r\n"
+				+ "  SUM(g.draw) AS draws, SUM(g.win) / COUNT(g.record_id) * 100 AS winning_percentage,\r\n"
+				+ "  (SELECT COUNT(*) FROM omok_game_record WHERE win >= 1 ORDER BY play_date DESC) AS winning_streak,\r\n"
+				+ "  (SELECT COUNT(*) FROM omok_game_record WHERE lose >= 1 ORDER BY play_date DESC) AS losing_streak\r\n"
+				+ "FROM\r\n"
+				+ "  omok_user_regist u\r\n"
+				+ "LEFT JOIN\r\n"
+				+ "  omok_game_record g ON u.mno = g.mno\r\n"
+				+ "WHERE\r\n"
+				+ "  id = ? AND pw = ?\r\n";
+		con = pool.getConnection();
 		try {
-			con = pool.getConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			pstmt.setString(2, pw);
 			
 			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				result = rs.getInt(1);	
+			if (rs.next()) {
+				usergameinfo = UserGameInfo.builder()
+			                .user_id(rs.getInt("user_id"))
+			                .user_name(rs.getString("user_name"))
+			                .email(rs.getString("email"))
+			                .registration_date(rs.getTimestamp("registration_date"))
+			                .total_games(rs.getInt("total_games"))
+			                .wins(rs.getInt("wins"))
+			                .losses(rs.getInt("losses"))
+			                .draws(rs.getInt("draws"))
+			                .winning_percentage(rs.getDouble("winning_percentage"))
+			                .winning_streak(rs.getInt("winning_streak"))
+			                .losing_streak(rs.getInt("losing_streak"))
+			                .build();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -132,7 +158,7 @@ public class UserDaoImpl implements UserDao{
 				e2.printStackTrace();
 			}
 		}
-		return result;
+		return usergameinfo;
 	}
 	
 }

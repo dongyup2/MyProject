@@ -1,12 +1,13 @@
 package services;
 
-import config.ServletContextConfig;
+import config.ServletContextConfig; 
 import dao.UserDao;
 import vo.User;
+import vo.UserGameInfo;
 
 public class UserServiceImpl implements UserService{
 	private final UserDao userDao;
-	
+
 	public UserServiceImpl() {
 		userDao = ServletContextConfig.getInstance().getUserDao();
 	}
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public int loginCheck(String id, String pw) throws Exception {
+	public UserGameInfo loginCheck(String id, String pw) throws Exception {
 		return userDao.loginCheck(id, pw);
 	}
 
