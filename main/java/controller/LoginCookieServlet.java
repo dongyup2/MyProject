@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import config.ServletContextConfig;
 import services.UserService;
 import vo.User;
+import vo.UserGameInfo;
 
 @WebServlet("/login")
 public class LoginCookieServlet extends HttpServlet {
@@ -31,19 +32,20 @@ public class LoginCookieServlet extends HttpServlet {
 		// 코드 추가: 쿠키에서 저장된 정보 가져오기
 		List<Cookie> cookies = Arrays.asList(request.getCookies());
 
-		cookies.forEach(cookie -> {
-			if(cookie != null) {
-				if(cookie.getName().equals("username")) {
-					request.setAttribute("username", cookie.getValue());
-				}else if(cookie.getName().equals("password")) {
-					request.setAttribute("password", cookie.getValue());
-				}else if(cookie.getName().equals("maintain")) {
-					request.setAttribute("maintain", cookie.getValue());
-				}
-			}
-		});
+		if (request.getCookies() != null) {
+		    for (Cookie cookie : request.getCookies()) {
+		        if (cookie.getName().equals("id")) {
+		            request.setAttribute("id", cookie.getValue());
+		        } else if (cookie.getName().equals("pw")) {
+		            request.setAttribute("pw", cookie.getValue());
+		        } else if (cookie.getName().equals("maintain")) {
+		            request.setAttribute("maintain", cookie.getValue());
+		        }
+		    }
+		}
 
-		request.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(request, response);
+
+		request.getRequestDispatcher("loginPageCookie.jsp").forward(request, response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -57,25 +59,30 @@ public class LoginCookieServlet extends HttpServlet {
 			if (user != null) {
 		        System.out.println("로그인 성공!");
 		        session.setAttribute("principal", user); // 코드 추가: 세션에 사용자 정보 저장
-
+		        
 		        // 코드 추가: 로그인 정보 유지 여부 확인 및 쿠키 저장
-				if(maintainFlag != null && maintainFlag.equalsIgnoreCase("on")) {
-					List<Cookie> cookies = new ArrayList<Cookie>();
-					
-					cookies.add(new Cookie("username", id));
-					cookies.add(new Cookie("password", pw));
-					cookies.add(new Cookie("maintain", "true"));
-					
-					cookies.forEach(cookie -> {
-						cookie.setMaxAge(60 * 60 * 24 * 30);
-						response.addCookie(cookie);
-					});
-				}
+		        if (maintainFlag != null && maintainFlag.equalsIgnoreCase("on")) {
+		            Cookie[] cookies = new Cookie[3];
+		            
+		            cookies[0] = new Cookie("id", id);
+		            cookies[1] = new Cookie("pw", pw);
+		            cookies[2] = new Cookie("maintain", "true");
+		            
+		            for (Cookie cookie : cookies) {
+		                cookie.setMaxAge(60 * 60 * 24 * 30);
+		                response.addCookie(cookie);
+		            }
+		        }
+
 
 		        response.getWriter().write("success");
+		        response.sendRedirect("index.jsp");
+		        System.out.println("로그인 중...");
 		    } else {
 		        response.getWriter().write("fail");
-		    }
+		        response.sendRedirect("loginPageCookie.jsp");
+		        System.out.println("로그인 실패...");
+		    }		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
