@@ -1,5 +1,7 @@
 package vo;
 
+import java.sql.Timestamp;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +18,7 @@ public class User {
 	private String id;
 	private String pw;
 	private String email;
+	private Timestamp regDate; 
 	
 	public User toUser() {
 		return User.builder()
