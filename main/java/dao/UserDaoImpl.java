@@ -1,12 +1,11 @@
 package dao;
 
-import java.sql.Connection;
+import java.sql.Connection; 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 
 import jdbc.DBcon;
-import services.UserService;
-import services.UserServiceImpl;
 import vo.User;
 import vo.UserGameInfo;
 
@@ -109,22 +108,9 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	@Override
-	public UserGameInfo loginCheck(String id, String pw) throws Exception {
-		UserGameInfo usergameinfo = null;
-		sql = "SELECT\r\n"
-				+ "  u.mno AS user_id, u.NAME AS user_name,\r\n"
-				+ "  u.email AS email, u.regdate AS registration_date,\r\n"
-				+ "  COUNT(g.record_id) AS total_games,\r\n"
-				+ "  SUM(g.win) AS wins, SUM(g.lose) AS losses,\r\n"
-				+ "  SUM(g.draw) AS draws, SUM(g.win) / COUNT(g.record_id) * 100 AS winning_percentage,\r\n"
-				+ "  (SELECT COUNT(*) FROM omok_game_record WHERE win >= 1 ORDER BY play_date DESC) AS winning_streak,\r\n"
-				+ "  (SELECT COUNT(*) FROM omok_game_record WHERE lose >= 1 ORDER BY play_date DESC) AS losing_streak\r\n"
-				+ "FROM\r\n"
-				+ "  omok_user_regist u\r\n"
-				+ "LEFT JOIN\r\n"
-				+ "  omok_game_record g ON u.mno = g.mno\r\n"
-				+ "WHERE\r\n"
-				+ "  id = ? AND pw = ?\r\n";
+	public User loginCheck(String id, String pw) throws Exception {
+		User user = null;
+		sql = "SELECT * FROM omok_user_regist WHERE id = ? AND pw = ?";
 		con = pool.getConnection();
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -133,20 +119,15 @@ public class UserDaoImpl implements UserDao{
 			
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
-				usergameinfo = UserGameInfo.builder()
-			                .user_id(rs.getInt("user_id"))
-			                .user_name(rs.getString("user_name"))
-			                .email(rs.getString("email"))
-			                .registration_date(rs.getTimestamp("registration_date"))
-			                .total_games(rs.getInt("total_games"))
-			                .wins(rs.getInt("wins"))
-			                .losses(rs.getInt("losses"))
-			                .draws(rs.getInt("draws"))
-			                .winning_percentage(rs.getDouble("winning_percentage"))
-			                .winning_streak(rs.getInt("winning_streak"))
-			                .losing_streak(rs.getInt("losing_streak"))
-			                .build();
+				user = new User();
+				user.setMno(rs.getInt("mno"));
+				user.setId(rs.getString("id"));
+				user.setPw(rs.getString("pw"));
+				user.setName(rs.getString("name"));
+				user.setEmail(rs.getString("email"));
+				user.setRegDate(rs.getTimestamp("regDate"));
 			}
+					
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -158,7 +139,82 @@ public class UserDaoImpl implements UserDao{
 				e2.printStackTrace();
 			}
 		}
-		return usergameinfo;
+		return user;
+		
+		}
+
+	@Override
+	public int getMnoByIdAndPassword(String id, String pw) throws Exception {
+	    int result = -1; // 초기 mno 값을 -1으로 변경
+	    sql = "SELECT mno FROM omok_user_regist WHERE id= ? AND pw = ?;"; // COUNT(*) 대신 mno를 선택
+	    try {
+	        con = pool.getConnection();
+	        pstmt = con.prepareStatement(sql);
+	        pstmt.setString(1, id);
+	        pstmt.setString(2, pw);
+	        rs = pstmt.executeQuery();
+	        if(rs.next()) {
+	            result = rs.getInt("mno"); // mno를 얻어오는 코드로 변경
+	            System.out.println(result);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	    	try {
+				if(con != null) con.close();
+				if(pstmt != null) pstmt.close();
+				if(rs != null) rs.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+	    }
+	    return result;
 	}
-	
+
+
+	@Override
+	public UserGameInfo getUserGameInfo(int mno) throws Exception {
+		UserGameInfo userGameInfo = null;
+		
+		sql = "SELECT u.mno, u.name, u.id, u.pw, u.email, u.regdate, g.record_id, g.win, g.lose, g.draw, g.play_date " +
+                "FROM omok_user_regist u " +
+                "LEFT JOIN omok_game_record g ON u.mno = g.mno " +
+                "WHERE u.mno = ?";
+		try {
+			con = pool.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, mno);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				  int recordMno = rs.getInt("mno");
+	                String name = rs.getString("name");
+	                String id = rs.getString("id");
+	                String pw = rs.getString("pw");
+	                String email = rs.getString("email");
+	                Timestamp regdate = rs.getTimestamp("regdate");
+	                int recordId = rs.getInt("record_id");
+	                int win = rs.getInt("win");
+	                int lose = rs.getInt("lose");
+	                int draw = rs.getInt("draw");
+	                Timestamp playDate = rs.getTimestamp("play_date");
+
+	                userGameInfo = UserGameInfo.builder()
+	                        .mno(recordMno)
+	                        .name(name)
+	                        .id(id)
+	                        .pw(pw)
+	                        .email(email)
+	                        .regDate(regdate)
+	                        .record_id(recordId)
+	                        .win(win)
+	                        .lose(lose)
+	                        .draw(draw)
+	                        .play_date(playDate)
+	                        .build();
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return userGameInfo;
+	}
 }
