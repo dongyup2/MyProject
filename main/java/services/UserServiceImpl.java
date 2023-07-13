@@ -31,8 +31,27 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public UserGameInfo loginCheck(String id, String pw) throws Exception {
-		return userDao.loginCheck(id, pw);
+	public User loginCheck(String id, String pw) throws Exception {
+		User user = userDao.loginCheck(id, pw);
+		if(user == null) {
+			return null;
+		}else {
+			System.out.println("아이디: " + id + "비밀번호: " + pw);
+			return user.getPw().equals(pw) ? user : null;
+		}
+		
+	}
+
+	@Override
+	public UserGameInfo getUserGameInfo(String id, String pw) throws Exception {
+		 int mno = userDao.getMnoByIdAndPassword(id, pw);
+	        if (mno != -1) {
+	        	System.out.println("해당되는 유저를 가져옵니다.");
+	            return userDao.getUserGameInfo(mno);
+	        } else {
+	        	System.err.println("해당되는 정보의 유저가 없습니다!");
+	            return null;
+	        }
 	}
 
 }
