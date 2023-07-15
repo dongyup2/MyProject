@@ -18,7 +18,7 @@ public class UserDaoImpl implements UserDao{
 	private String sql;
 	
 	public UserDaoImpl() {
-		pool = DBcon.getInstance().getInstance();
+		pool = DBcon.getInstance();
 	}
 	
 	@Override

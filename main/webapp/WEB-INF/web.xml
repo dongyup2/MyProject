@@ -19,7 +19,7 @@
   </context-param>
   <context-param>
   	<param-name>mariaUrl</param-name>
-  	<param-value>jdbc:mariadb://localhost:3306/green01</param-value>
+  	<param-value>jdbc:mariadb://localhost:3306/omokgame</param-value>
   </context-param>
   <context-param>
   	<param-name>mariaId</param-name>

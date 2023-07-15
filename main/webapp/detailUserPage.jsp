@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,15 +8,15 @@
 </head>
 <body>
     <h1>User Game Info</h1>
-    <h3>Member Number: ${userGameInfo.mno}</h3>
-    <h3>Name: ${userGameInfo.name}</h3>
-    <h3>ID: ${userGameInfo.id}</h3>
-    <h3>Email: ${userGameInfo.email}</h3>
-    <h3>regDate : ${userGameInfo.regDate }</h3>
-    <h3>Game record ID: ${userGameInfo.record_id}</h3>
-    <h3>Win: ${userGameInfo.win}</h3>
-    <h3>Lose: ${userGameInfo.lose}</h3>
-    <h3>Draw: ${userGameInfo.draw}</h3>
-    <h3>Last play date: ${userGameInfo.play_date}</h3>
+    <h3>Member Number: <span>${userGameInfo.mno}</span></h3>
+    <h3>Name: <span>${userGameInfo.name}</span></h3>
+    <h3>ID: <span>${userGameInfo.id}</span></h3>
+    <h3>Email: <span>${userGameInfo.email}</span></h3>
+    <h3>regDate: <span>${userGameInfo.regDate}</span></h3>
+    <h3>Game record ID: <span>${userGameInfo.record_id}</span></h3>
+    <h3>Win: <span>${userGameInfo.win}</span></h3>
+    <h3>Lose: <span>${userGameInfo.lose}</span></h3>
+    <h3>Draw: <span>${userGameInfo.draw}</span></h3>
+    <h3>Last play date: <span>${userGameInfo.play_date}</span></h3>
 </body>
 </html>

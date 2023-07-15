@@ -1,6 +1,6 @@
 package controller;
 
-import java.io.IOException;
+import java.io.IOException;  
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -73,8 +73,6 @@ public class LoginCookieServlet extends HttpServlet {
 		                response.addCookie(cookie);
 		            }
 		        }
-
-
 		        response.getWriter().write("success");
 		        response.sendRedirect("index.jsp");
 		        System.out.println("로그인 중...");
