@@ -15,7 +15,9 @@
 	<a href="egg">알까기</a>
 	<br>
 	<span>쿠키에 저장된 아이디: <span id="storedId"></span></span><br>
-	<a href="/logout">로그아웃</a>
+	<form action="logoutServlet" method="get">
+    <input type="submit" value="로그아웃">
+</form>
 <script>
 /* document.getElementById("logout").addEventListener("click", async function() {
 	  await fetch('/logout', { method: 'GET' });

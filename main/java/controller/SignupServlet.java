@@ -11,7 +11,7 @@ import config.ServletContextConfig;
 import services.UserService;
 import vo.User;
 
-@WebServlet("/signup")
+@WebServlet("/signupServlet")
 public class SignupServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

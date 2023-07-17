@@ -1,6 +1,6 @@
 package controller;
 
-import java.io.IOException;  
+import java.io.IOException;   
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +18,7 @@ import services.UserService;
 import vo.User;
 import vo.UserGameInfo;
 
-@WebServlet("/login")
+@WebServlet("/loginServlet")
 public class LoginCookieServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
  

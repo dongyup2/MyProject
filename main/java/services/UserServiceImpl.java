@@ -53,5 +53,8 @@ public class UserServiceImpl implements UserService{
 	            return null;
 	        }
 	}
+	public UserGameInfo getUser1Info() throws Exception{
+		
+	}
 
 }

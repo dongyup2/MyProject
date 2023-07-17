@@ -1,6 +1,6 @@
 package controller;
 
-import java.io.IOException;
+import java.io.IOException; 
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,13 +14,14 @@ import javax.servlet.http.HttpServletResponse;
  * 2. api(Application Programming Interface) 요청 -> CRUD(post, get, put, delete): JavaScript(AJAX 동기, 비동기)
  */
 
-@WebServlet("/index")
+@WebServlet("/indexServlet")
 public class IndexServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L; 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//RequestDispatcher requestDispatcher = request.getRequestDispatcher("index.jsp");
 		request.getRequestDispatcher("index.jsp").forward(request, response);
+		
 	}
 
 }

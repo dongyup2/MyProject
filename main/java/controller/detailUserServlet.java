@@ -14,7 +14,6 @@ import config.ServletContextConfig;
 import services.UserService;
 import vo.UserGameInfo;
 
-
 @WebServlet("/detailUser")
 public class detailUserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

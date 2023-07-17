@@ -9,4 +9,5 @@ public interface UserService{
 	public boolean nameCheckUser(String name) throws Exception;
 	public User loginCheck(String id, String pw) throws Exception;
 	public UserGameInfo getUserGameInfo(String id, String pw) throws Exception; 
-}
+	public UserGameInfo getUser1Info() throws Exception;
+}	

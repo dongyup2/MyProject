@@ -9,7 +9,7 @@
 <body>
 	<h1>로그인 페이지</h1>
 	<hr>
-	<form action="login" method="post" onsubmit="return inputCheck();">
+	<form action="loginServlet" method="post" onsubmit="return inputCheck();">
 	<label>아이디: <input type="text" name="id"></label><br>
 	<label>비밀번호: <input type="password" name="pw"></label><br>
 	<label for="maintain">로그인 유지:</label>
