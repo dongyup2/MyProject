@@ -64,8 +64,8 @@
             <div class="result" id="div_result_nickname"></div>
             <div class="input-area">
                 <label>아이디</label>
-                <input type="text" name="signupId">
-                <input type="button" id="btn_idCheck" data-init="0" value="아이디 중복확인">
+                <input type="text" name="signupId" maxlength="9" id="txt_id">
+                <input type="button" id="btn_idCheck" data-init="0" value="아이디 중복확인" >
             </div>
             <div class="result" id="div_result_id"></div>
             <label>비밀번호 <input type="password" name="signupPw"></label><br>
@@ -127,6 +127,12 @@
 		        txt_id.focus();
 		        return;
 		    }
+			if(txt_id.value.trim().length >= 10){
+				alert("10자 미만으로 입력하세요.");
+				txt_id.value = txt_id.value.slice(0, 9);
+				txt_id.focus();
+				return;
+			}
 			btn_idCheck.dataset.init = 1;
 			var xhr = new XMLHttpRequest();
 			xhr.onload = function () {
