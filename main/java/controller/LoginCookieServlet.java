@@ -18,7 +18,7 @@ import services.UserService;
 import vo.User;
 import vo.UserGameInfo;
 
-@WebServlet("/loginServlet")
+@WebServlet("/loginCookie")
 public class LoginCookieServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
  
@@ -33,17 +33,25 @@ public class LoginCookieServlet extends HttpServlet {
 		List<Cookie> cookies = Arrays.asList(request.getCookies());
 
 		if (request.getCookies() != null) {
+		    String maintain = null; // 추가된 변수
+
 		    for (Cookie cookie : request.getCookies()) {
 		        if (cookie.getName().equals("id")) {
 		            request.setAttribute("id", cookie.getValue());
 		        } else if (cookie.getName().equals("pw")) {
 		            request.setAttribute("pw", cookie.getValue());
 		        } else if (cookie.getName().equals("maintain")) {
-		            request.setAttribute("maintain", cookie.getValue());
+		            maintain = cookie.getValue(); // 추가된 줄
+		            request.setAttribute("maintain", maintain);
 		        }
 		    }
-		}
 
+		   //'maintain' 쿠키가 'keep' 인 경우에만 아이디와 비밀번호 정보를 가져오기.
+		    if (maintain == null || !maintain.equals("keep")) {
+		        request.removeAttribute("id");
+		        request.removeAttribute("pw");
+		    }
+		}
 
 		request.getRequestDispatcher("loginPageCookie.jsp").forward(request, response);
 	}
@@ -73,12 +81,10 @@ public class LoginCookieServlet extends HttpServlet {
 		                response.addCookie(cookie);
 		            }
 		        }
-		        response.getWriter().write("success");
-		        response.sendRedirect("index.jsp");
-		        System.out.println("로그인 중...");
-		    } else {
-		        response.getWriter().write("fail");
-		        response.sendRedirect("loginPageCookie.jsp");
+		        response.sendRedirect("index");
+		        System.out.println("로그인 성공...");
+		    } else {		       
+		        response.sendRedirect("login");
 		        System.out.println("로그인 실패...");
 		    }		
 		} catch (Exception e) {

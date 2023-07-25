@@ -15,20 +15,22 @@
 </head>
 <body>
   <div class="nav">오목 게임</div>
-   <div><a href="SignupRegis.jsp"></a></div>  
+   <div><a href="SignupRe"C:/Users/msi/Desktop/오목게임화면/오목게임 승리후 .jpg"gis.jsp"></a></div>  
   <div class="empty"></div>
   <div class="container">
     <div class="profile-left">
-      <img src="img/bono.jpg" alt="player1 이미지">
+      <img src="img/근육보노보노.jpg" alt="player1 이미지">
       <div class="profile-name">Player 1</div>
-      <div class="profile-info">유저1 정보</div>
-      <div id="timer1">남은 시간: 30초</div>
+      <div class="profile-info">유저1 정보<br>
+      	승 / 패 / 무 / 승률</div>
+      	<div id="timer1">남은 시간: 30초</div>
     </div>
     <div class="board" id="board"></div>
     <div class="profile-right">
-      <img src="img/bono.jpg" alt="player2 이미지">
+      <img src="img/잔망루피.jpg" alt="player2 이미지">
       <div class="profile-name">Player 2</div>
-      <div class="profile-info">유저2 정보</div>
+      <div class="profile-info">유저2 정보<br>
+      	승 / 패 / 무 / 승률</div>
       <div id="timer2">남은 시간: 30초</div>
     </div>
   </div>

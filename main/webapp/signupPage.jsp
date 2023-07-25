@@ -1,27 +1,80 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>회원가입 페이지</title>
+<style>
+    body {
+        background-color: #c2c2c2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .main-content {
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        border-radius: 10px;
+    }
+    h1 {
+        margin-bottom: 20px;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    .input-area {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    label {
+        margin-right: 10px;
+    }
+    .result {
+        margin-bottom: 5px;
+    }
+    input[type="submit"] {
+        align-self: center;
+        background-color: coral;
+        padding: 5px 15px;
+        border: none;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+</style>
 </head>
 <body>
-	<h1>회원가입 페이지</h1>
-	<hr>
-	<form action="signup" method="post">
-		<label>닉네임 <input type="text" name="signupName"></label>
-		<input type="button" id="btn_nicknameCheck" data-init="0" value="닉네임 중복확인"><br>
-		<div class="result" id="div_result_nickname"></div>
-		<label>아이디 <input type="text" name="signupId"></label>
-		<input type="button" id="btn_idCheck" data-init="0" value="아이디 중복확인"><br>
-		<div class="result" id="div_result_id"></div>
-		<label>비밀번호 <input type="password" name="signupPw"></label><br>
-		<label>비밀번호 확인 <input type="password" name="signupPwCheck"></label><br>
-		<label>이메일 <input type="email" name="signupEmail"></label><br>
-		<input type="submit" value="회원가입" onclick="return inputCheck()">&nbsp;&nbsp;
-	</form>
-	<script>
+    <div class="main-content">
+        <h1>회원가입 페이지</h1>
+        <hr>
+        <form action="signup" method="post">
+            <div class="input-area">
+                <label>닉네임</label>
+                <input type="text" name="signupName">
+                <input type="button" id="btn_nicknameCheck" data-init="0" value="닉네임 중복확인">
+            </div>
+            <div class="result" id="div_result_nickname"></div>
+            <div class="input-area">
+                <label>아이디</label>
+                <input type="text" name="signupId">
+                <input type="button" id="btn_idCheck" data-init="0" value="아이디 중복확인">
+            </div>
+            <div class="result" id="div_result_id"></div>
+            <label>비밀번호 <input type="password" name="signupPw"></label><br>
+            <label>비밀번호 확인 <input type="password" name="signupPwCheck"></label><br>
+            <label>이메일 <input type="email" name="signupEmail"></label><br>
+            <input type="submit" value="회원가입" onclick="return inputCheck()">&nbsp;&nbsp;
+        </form>
+    </div>
+    <script>
 	
 		const txt_nickname = document.querySelector("input[name='signupName']");
 		const btn_nicknameCheck = document.querySelector("#btn_nicknameCheck");
@@ -154,3 +207,4 @@
 	</script>
 </body>
 </html>
+

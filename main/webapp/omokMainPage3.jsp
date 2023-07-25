@@ -8,6 +8,8 @@
 <title>Document</title>
 <style>
 body {
+	margin:0px;
+	padding:0px;
 	background-color: white;
 	display: flex;
 	justify-content: center;
@@ -17,13 +19,15 @@ body {
 
 .main-content {
 	display: flex;
+	flex-direction:row;
+	width:80%;
 	max-width: 90%; /* 이 값을 변경시 중앙 내용 섹션의 최대 너비. */
 }
 
 #box {
 	background-color: #d2d2d2;
 	max-width: 1064px;
-	height: 706px;
+	width:70%;
 	min-height: 0px;
 	top: 40px;
 	padding: 10px;
@@ -81,22 +85,18 @@ body {
 }
 
 #mainBox {
-	width: 1062px;
-	height: 500px;
+	display:flex;
+	flex-direction:row;
+	width: 100%;
+	height: 90%;
 	margin: 1px;
-	display: grid;
-	grid-template-columns: 2fr 1fr;
-	grid-template-rows: 1fr;
 }
 
 #listBox {
 	background-color: white;
-	width: 100%;
-	height: 650px;
-	grid-row-start: 1;
-	grid-row-end: 2;
-	grid-column-start: 1;
-	grid-column-end: 2;
+	width: 60%;
+	height: 100%;
+	padding-bottom:15px;
 	overflow-y: scroll;
 }
 
@@ -112,12 +112,10 @@ body {
 
 #userBox {
 	background-color: white;
-	width: 100%;
-	height: 650px;
-	grid-row-start: 1;
-	grid-row-end: 2;
-	grid-column-start: 2;
-	grid-column-end: 3;
+	min-width: 300px;
+	padding-top:15px;
+	width: 32%;
+	height:100%;
 	overflow-y: scroll;
 	display: flex;
 	flex-direction: column;
@@ -191,22 +189,29 @@ body {
 }
 
 #chatMainbox {
+	position:relative;
 	background-color: #d2d2d2;
-	padding-right: 100px;
+	width:30%;
+	height:100vh;
 }
 
 .chat {
-	height: 610px;
-	width: 350px;
+	position:absolute;
+	bottom:5%;
+	right:0%;
+	margin-right:10px;
+	height: 310px;
+	width: 94%;
 	background-color: #f8f8f8;
 	display: flex;
 	flex-direction: column;
 	padding: 20px;
 	margin-top: 36px;
-	margin-left: 10px;
 	overflow-y: scroll;
 	gap: 8px;
 }
+
+
 
 .chat-window {
 	position: relative;
@@ -272,6 +277,9 @@ body {
 	cursor: pointer;
 	border-radius: 8px;
 }
+
+
+
 
 .modal {
 	display: none;
@@ -472,7 +480,6 @@ body {
 			</div>
 		</div>
 		<div id="chatMainbox">
-			<div class="chatBox">
 				<div class="chat">
 					<div class="live-viewers">Live 채팅방</div>
 					<div class="chat-window" id="chat-window">
@@ -503,9 +510,7 @@ body {
 						</div>
 					</div>
 				</div>
-			</div>
 		</div>
-	</div>
 	</div>
 	<script src="js/omokmainpage.js" type="text/javascript"></script>
 </body>

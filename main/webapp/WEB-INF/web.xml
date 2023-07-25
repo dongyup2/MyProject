@@ -10,23 +10,23 @@
     <welcome-file>default.htm</welcome-file>
   </welcome-file-list>
   <context-param>
-  	<param-name>enc</param-name>
-  	<param-value>utf-8</param-value>
+    <param-name>enc</param-name>
+    <param-value>utf-8</param-value>
   </context-param>
   <context-param>
-  	<param-name>mariaDriver</param-name>
-  	<param-value>org.mariadb.jdbc.Driver</param-value>
+    <param-name>mariaDriver</param-name>
+    <param-value>org.mariadb.jdbc.Driver</param-value>
   </context-param>
   <context-param>
-  	<param-name>mariaUrl</param-name>
-  	<param-value>jdbc:mariadb://localhost:3306/omokgame</param-value>
+    <param-name>mariaUrl</param-name>
+    <param-value>jdbc:mariadb://localhost:3306/omokgame</param-value>
   </context-param>
   <context-param>
-  	<param-name>mariaId</param-name>
-  	<param-value>root</param-value>
+    <param-name>mariaId</param-name>
+    <param-value>root</param-value>
   </context-param>
   <context-param>
-  	<param-name>mariaPw</param-name>
-  	<param-value>1234</param-value>
+    <param-name>mariaPw</param-name>
+    <param-value>1234</param-value>
   </context-param>
 </web-app>
