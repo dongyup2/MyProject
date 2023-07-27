@@ -29,10 +29,18 @@ public class AuthenticationFilter extends HttpFilter implements Filter {
 		if(req.getRequestURI().contains("login") || req.getRequestURI().contains("signup")) {
 			HttpSession session = req.getSession();
 			if(session.getAttribute("principal") != null) {
-				resp.sendRedirect("/index");
+				resp.sendRedirect("omokMainPage3.jsp");
 				return;
 			}
-		}
+		}		
+//		 else {
+//	    // 로그인 페이지가 아닌 다른 페이지를 방문하는 데 세션 정보가 없다면 로그인 페이지로 리다이렉트
+//	    HttpSession session = req.getSession();
+//	    if (session.getAttribute("principal") == null) {
+//	        resp.sendRedirect("loginPageCookie.jsp");
+//	        return;
+//	    }
+//	}
 		req.getServletContext();
 		
 		chain.doFilter(request, response);
