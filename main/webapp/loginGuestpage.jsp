@@ -82,7 +82,7 @@ a {
         </div>
         <div class="button-container">
             <button><a href="loginPageCookie.jsp">로그인</a></button>
-            <button><a href="omokMainPage.jsp">게스트</a></button>
+            <button><a href="omokMainPage3.jsp">게스트</a></button>
         </div>
         <img src="img/오목게임플레이화면.png" alt="오목 게임 이미지">
         <p class="description">흑백 조각 (돌)이있는 15x15 보드의 두 플레이어를 위한 게임; 목표는 정확히 5 개의 돌을 연속으로 이기는 것입니다.</p>
