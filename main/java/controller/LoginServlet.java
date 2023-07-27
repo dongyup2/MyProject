@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet {
 			if (user != null) {
 		        System.out.println("로그인 성공!");
 		        session.setAttribute("principal", user);
-		        response.sendRedirect("omokMainPage.jsp");
+		        request.getRequestDispatcher("omokMainPage3.jsp").forward(request, response);
 		    } else {		       
 		    	 request.setAttribute("errorMessage", "잘못된 아이디 또는 비밀번호입니다! ");
 		         request.getRequestDispatcher("loginPageCookie.jsp").forward(request, response);
