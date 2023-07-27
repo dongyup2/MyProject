@@ -83,7 +83,9 @@ body {
 	background-color: #ECECEC;
 	cursor: pointer;
 }
-
+#logoutbtn{
+	margin-left:10px;
+}
 #mainBox {
 	display:flex;
 	flex-direction:row;
@@ -187,12 +189,25 @@ body {
 .userlist:hover {
 	background-color: #ECECEC;
 }
-
+#communitybox{
+	background-color: #d2d2d2;
+	width:30%;
+	height:100vh;
+}
 #chatMainbox {
+	display:flex;
+	flex-direction:column;
 	position:relative;
 	background-color: #d2d2d2;
 	width:30%;
 	height:100vh;
+}
+.temp{
+	height: 310px;
+	width: 94%;
+	background-color: white;
+	position:absolute;
+	margin-right:10px;
 }
 
 .chat {
@@ -337,6 +352,10 @@ body {
 				<div class="btn">#100...</div>
 				<div id="toggleBtn1" class="btn2">방 목록</div>
 				<div id="toggleBtn2" class="btn2">내정보</div>
+				<form action="logout" method="POST">
+  					<input type="submit" value="로그아웃">
+				</form>
+				<button class="btn" onclick="runCommunity()">커뮤니티</button>
 			</div>
 			<!-- Create Room Modal -->
 			<div id="createRoomModal" class="modal">
@@ -365,7 +384,7 @@ body {
 			<div id="mainBox">
 				<div id="listBox">
 					<div class="gameRoomList">
-						<span class="userText">#102</span> <span class="userText">2분</span>
+						<span class="userText">#102</span> <span class="userText">방제목</span>
 						<div class="user2">
 							<span class="userName" name="user1">cnp3001g</span> <span
 								class="userName" name="user2">silver8532</span>
@@ -475,11 +494,12 @@ body {
 				</div>
 				<div id="userProfile" style="display: none">
 					<h1>User Game Info</h1>
-					<!-- 실제로 데이터를 출력하는 부분은 여기에 작성 -->
+					
 				</div>
 			</div>
 		</div>
 		<div id="chatMainbox">
+			<div class="temp"></div>
 				<div class="chat">
 					<div class="live-viewers">Live 채팅방</div>
 					<div class="chat-window" id="chat-window">
@@ -513,5 +533,53 @@ body {
 		</div>
 	</div>
 	<script src="js/omokmainpage.js" type="text/javascript"></script>
+	<script>
+    function updateGameRoomList() {
+      $.ajax({
+        url: "roomListUpdate",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+          // 각 방 정보를 목록에 표시 (기존 목록은 삭제 후 새로 생성)
+          var roomListElement = document.getElementById("gameRoomList");
+          roomListElement.innerHTML = '';
+
+          data.rooms.forEach(function(room) {
+            var roomElement = document.createElement("span");
+            roomElement.textContent = room.roomTitle + ' (' + room.gameType + ') ';
+            roomElement.style.cursor = "pointer";
+
+            // 이벤트 리스너 추가
+            roomElement.addEventListener("click", function() {
+              joinGameRoom(room.id);
+            });
+
+            roomListElement.appendChild(roomElement);
+          });
+        },
+        error: function(xhr, status, error) {
+          console.error("Error updating the game room list:", error);
+        }
+      });
+    }
+
+    // 주기적으로 게임방 목록 업데이트 (예: 5초마다)
+    setInterval(updateGameRoomList, 5000);
+  </script>
+  <script>
+  function addGameRoomToList(roomTitle, gameType) {
+	  const roomListElement = document.getElementById("gameRoomList");
+	  const roomElement = document.createElement("span");
+	  roomElement.textContent = `${roomTitle} (${gameType}) `;
+	  roomElement.style.cursor = "pointer";
+
+	  roomElement.addEventListener("click", () => {
+	    joinGameRoom("newRoomId");
+	  });
+
+	  roomListElement.appendChild(roomElement);
+	}
+
+  </script>
 </body>
 </html>
