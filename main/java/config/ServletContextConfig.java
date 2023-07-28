@@ -1,8 +1,12 @@
 package config;
 
+import dao.GamePageDao;
+import dao.GamePageDaoImpl;
 import dao.UserDao;
 import dao.UserDaoImpl;
 import lombok.Getter;
+import services.GamePageService;
+import services.GamePageServiceImpl;
 import services.UserService;
 import services.UserServiceImpl;
 
@@ -17,6 +21,9 @@ public class ServletContextConfig {
 	//Service
 	private UserService userService;
 	
+	private GamePageDao gamePageDao;
+	
+	private GamePageService gamePageService;
 	
 	private ServletContextConfig() {}
 	
@@ -35,6 +42,12 @@ public class ServletContextConfig {
 		}
 		if(userService == null) {
 			userService = new UserServiceImpl();
+		}
+		if(gamePageDao == null) {
+			gamePageDao = new GamePageDaoImpl();
+		}
+		if(gamePageService == null) {
+			gamePageService = new GamePageServiceImpl();
 		}
 	}
 	
