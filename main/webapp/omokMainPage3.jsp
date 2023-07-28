@@ -5,11 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="js/jquery-3.7.0.js"></script>
 <title>Document</title>
 <style>
 body {
-	margin:0px;
-	padding:0px;
+	margin: 0px;
+	padding: 0px;
 	background-color: white;
 	display: flex;
 	justify-content: center;
@@ -19,15 +20,15 @@ body {
 
 .main-content {
 	display: flex;
-	flex-direction:row;
-	width:80%;
+	flex-direction: row;
+	width: 80%;
 	max-width: 90%; /* 이 값을 변경시 중앙 내용 섹션의 최대 너비. */
 }
 
 #box {
 	background-color: #d2d2d2;
 	max-width: 1064px;
-	width:70%;
+	width: 70%;
 	min-height: 0px;
 	top: 40px;
 	padding: 10px;
@@ -83,12 +84,14 @@ body {
 	background-color: #ECECEC;
 	cursor: pointer;
 }
-#logoutbtn{
-	margin-left:10px;
+
+#logoutbtn {
+	margin-left: 10px;
 }
+
 #mainBox {
-	display:flex;
-	flex-direction:row;
+	display: flex;
+	flex-direction: row;
 	width: 100%;
 	height: 90%;
 	margin: 1px;
@@ -98,7 +101,7 @@ body {
 	background-color: white;
 	width: 60%;
 	height: 100%;
-	padding-bottom:15px;
+	padding-bottom: 15px;
 	overflow-y: scroll;
 }
 
@@ -115,9 +118,9 @@ body {
 #userBox {
 	background-color: white;
 	min-width: 300px;
-	padding-top:15px;
+	padding-top: 15px;
 	width: 32%;
-	height:100%;
+	height: 100%;
 	overflow-y: scroll;
 	display: flex;
 	flex-direction: column;
@@ -157,10 +160,12 @@ body {
 	align-items: center;
 }
 
-.userText {
+.roomMno {
 	font-size: 13px;
 }
-
+.roomtitle{
+	font-size: 13px;
+}
 .userName {
 	font-size: 14px;
 	font-weight: bold;
@@ -189,32 +194,35 @@ body {
 .userlist:hover {
 	background-color: #ECECEC;
 }
-#communitybox{
+
+#communitybox {
 	background-color: #d2d2d2;
-	width:30%;
-	height:100vh;
+	width: 30%;
+	height: 100vh;
 }
+
 #chatMainbox {
-	display:flex;
-	flex-direction:column;
-	position:relative;
+	display: flex;
+	flex-direction: column;
+	position: relative;
 	background-color: #d2d2d2;
-	width:30%;
-	height:100vh;
+	width: 30%;
+	height: 100vh;
 }
-.temp{
+
+.temp {
 	height: 310px;
 	width: 94%;
 	background-color: white;
-	position:absolute;
-	margin-right:10px;
+	position: absolute;
+	margin-right: 10px;
 }
 
 .chat {
-	position:absolute;
-	bottom:5%;
-	right:0%;
-	margin-right:10px;
+	position: absolute;
+	bottom: 5%;
+	right: 0%;
+	margin-right: 10px;
 	height: 310px;
 	width: 94%;
 	background-color: #f8f8f8;
@@ -225,8 +233,6 @@ body {
 	overflow-y: scroll;
 	gap: 8px;
 }
-
-
 
 .chat-window {
 	position: relative;
@@ -293,9 +299,6 @@ body {
 	border-radius: 8px;
 }
 
-
-
-
 .modal {
 	display: none;
 	position: fixed;
@@ -353,7 +356,7 @@ body {
 				<div id="toggleBtn1" class="btn2">방 목록</div>
 				<div id="toggleBtn2" class="btn2">내정보</div>
 				<form action="logout" method="POST">
-  					<input type="submit" value="로그아웃">
+					<input type="submit" value="로그아웃">
 				</form>
 				<button class="btn" onclick="runCommunity()">커뮤니티</button>
 			</div>
@@ -370,8 +373,8 @@ body {
 							for="password">비밀번호: </label> <input type="password"
 							id="password" placeholder="비밀번호를 입력하세요" /> <br /> <label
 							for="gameType">게임 유형: </label> <select id="gameType">
-							<option value="regular_omok">일반오목</option>
-							<option value="speed_omok">스피드오목</option>
+							<option value="일반게임">일반오목</option>
+							<option value="스피드오목">스피드오목</option>
 						</select>
 					</div>
 					<div class="modal-footer">
@@ -380,46 +383,14 @@ body {
 					</div>
 				</div>
 			</div>
-
 			<div id="mainBox">
 				<div id="listBox">
 					<div class="gameRoomList">
-						<span class="userText">#102</span> <span class="userText">방제목</span>
+						<span class="roomMno">#102</span>
+						 <span class="roomTitle">방제목</span>
 						<div class="user2">
-							<span class="userName" name="user1">cnp3001g</span> <span
+							<span class="userName" name="user1"></span> <span
 								class="userName" name="user2">silver8532</span>
-						</div>
-						<div class="userBtn">>></div>
-					</div>
-					<div class="gameRoomList">
-						<span class="userText">#102</span> <span class="userText">2분</span>
-						<div class="user2">
-							<span class="userName" name="user1">orange1876</span> <span
-								class="userName" name="user2">blue4992</span>
-						</div>
-						<div class="userBtn">>></div>
-					</div>
-					<div class="gameRoomList">
-						<span class="userText">#102</span> <span class="userText">2분</span>
-						<div class="user2">
-							<span class="userName" name="user1">green7864</span> <span
-								class="userName" name="user2">red3587</span>
-						</div>
-						<div class="userBtn">>></div>
-					</div>
-					<div class="gameRoomList">
-						<span class="userText">#102</span> <span class="userText">2분</span>
-						<div class="user2">
-							<span class="userName" name="user1">purple5314</span> <span
-								class="userName" name="user2">yellow2448</span>
-						</div>
-						<div class="userBtn">>></div>
-					</div>
-					<div class="gameRoomList">
-						<span class="userText">#102</span> <span class="userText">2분</span>
-						<div class="user2">
-							<span class="userName" name="user1">black9110</span> <span
-								class="userName" name="user2">pink6758</span>
 						</div>
 						<div class="userBtn">>></div>
 					</div>
@@ -494,92 +465,44 @@ body {
 				</div>
 				<div id="userProfile" style="display: none">
 					<h1>User Game Info</h1>
-					
+
 				</div>
 			</div>
 		</div>
 		<div id="chatMainbox">
 			<div class="temp"></div>
-				<div class="chat">
-					<div class="live-viewers">Live 채팅방</div>
-					<div class="chat-window" id="chat-window">
-						<div class="chat-message other-message">
-							<img src="" alt="">
-							<div class="text">오목 할사람</div>
-						</div>
-						<div class="chat-message other-message">
-							<img src="" alt="">
-							<div class="text">응 안해</div>
-						</div>
-						<div class="chat-message other-message">
-							<img src="" alt="">
-							<div class="text">너나 해</div>
-						</div>
-						<div class="chat-message other-message">
-							<img src="" alt="">
-							<div class="text">ㄱㄱ</div>
-						</div>
-						<div class="chat-message my-message">
-							<img src="" alt="">
-							<div class="text">ㅎㅇ</div>
-						</div>
-						<div class="input-container">
-							<input type="text" id="message-input"
-								placeholder="메세지를 입력해주세요..." />
-							<button id="send-button">전송</button>
-						</div>
+			<div class="chat">
+				<div class="live-viewers">Live 채팅방</div>
+				<div class="chat-window" id="chat-window">
+					<div class="chat-message other-message">
+						<img src="" alt="">
+						<div class="text">오목 할사람</div>
+					</div>
+					<div class="chat-message other-message">
+						<img src="" alt="">
+						<div class="text">응 안해</div>
+					</div>
+					<div class="chat-message other-message">
+						<img src="" alt="">
+						<div class="text">너나 해</div>
+					</div>
+					<div class="chat-message other-message">
+						<img src="" alt="">
+						<div class="text">ㄱㄱ</div>
+					</div>
+					<div class="chat-message my-message">
+						<img src="" alt="">
+						<div class="text">ㅎㅇ</div>
+					</div>
+					<div class="input-container">
+						<input type="text" id="message-input" placeholder="메세지를 입력해주세요..." />
+						<button id="send-button">전송</button>
 					</div>
 				</div>
+			</div>
 		</div>
 	</div>
 	<script src="js/omokmainpage.js" type="text/javascript"></script>
-	<script>
-    function updateGameRoomList() {
-      $.ajax({
-        url: "roomListUpdate",
-        type: "GET",
-        dataType: "json",
-        success: function(data) {
-          // 각 방 정보를 목록에 표시 (기존 목록은 삭제 후 새로 생성)
-          var roomListElement = document.getElementById("gameRoomList");
-          roomListElement.innerHTML = '';
 
-          data.rooms.forEach(function(room) {
-            var roomElement = document.createElement("span");
-            roomElement.textContent = room.roomTitle + ' (' + room.gameType + ') ';
-            roomElement.style.cursor = "pointer";
-
-            // 이벤트 리스너 추가
-            roomElement.addEventListener("click", function() {
-              joinGameRoom(room.id);
-            });
-
-            roomListElement.appendChild(roomElement);
-          });
-        },
-        error: function(xhr, status, error) {
-          console.error("Error updating the game room list:", error);
-        }
-      });
-    }
-
-    // 주기적으로 게임방 목록 업데이트 (예: 5초마다)
-    setInterval(updateGameRoomList, 5000);
-  </script>
-  <script>
-  function addGameRoomToList(roomTitle, gameType) {
-	  const roomListElement = document.getElementById("gameRoomList");
-	  const roomElement = document.createElement("span");
-	  roomElement.textContent = `${roomTitle} (${gameType}) `;
-	  roomElement.style.cursor = "pointer";
-
-	  roomElement.addEventListener("click", () => {
-	    joinGameRoom("newRoomId");
-	  });
-
-	  roomListElement.appendChild(roomElement);
-	}
-
-  </script>
 </body>
 </html>
