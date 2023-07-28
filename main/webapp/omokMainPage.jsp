@@ -17,13 +17,14 @@ body {
 
 .main-content {
 	display: flex;
+	width:80%;
 	max-width: 90%; /* 이 값을 변경시 중앙 내용 섹션의 최대 너비. */
 }
 
 #box {
 	background-color: #d2d2d2;
 	max-width: 1064px;
-	height: 706px;
+	width:50%;
 	min-height: 0px;
 	top: 40px;
 	padding: 10px;
@@ -91,7 +92,7 @@ body {
 
 #listBox {
 	background-color: white;
-	width: 100%;
+	width: 550px;
 	height: 650px;
 	grid-row-start: 1;
 	grid-row-end: 2;
@@ -112,7 +113,9 @@ body {
 
 #userBox {
 	background-color: white;
-	width: 100%;
+	min-width: 300px;
+	padding-top:15px;
+	width: 150px;
 	height: 650px;
 	grid-row-start: 1;
 	grid-row-end: 2;
@@ -191,11 +194,18 @@ body {
 }
 
 #chatMainbox {
+	position:relative;
 	background-color: #d2d2d2;
-	padding-right: 100px;
+	margin-left:300px;
+	width:490px;
+	height:100vh;
 }
 
 .chat {
+	position:absolute;
+	top:45%;
+	left:50%;
+	transform:translate(-50%, -50%);
 	height: 610px;
 	width: 350px;
 	background-color: #f8f8f8;
@@ -203,7 +213,6 @@ body {
 	flex-direction: column;
 	padding: 20px;
 	margin-top: 36px;
-	margin-left: 10px;
 	overflow-y: scroll;
 	gap: 8px;
 }
@@ -472,7 +481,6 @@ body {
 			</div>
 		</div>
 		<div id="chatMainbox">
-			<div class="chatBox">
 				<div class="chat">
 					<div class="live-viewers">Live 채팅방</div>
 					<div class="chat-window" id="chat-window">
@@ -503,9 +511,7 @@ body {
 						</div>
 					</div>
 				</div>
-			</div>
 		</div>
-	</div>
 	</div>
 	<script src="js/omokmainpage.js" type="text/javascript"></script>
 </body>

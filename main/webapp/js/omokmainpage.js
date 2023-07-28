@@ -66,26 +66,32 @@ toggleBtn2.addEventListener("click", () => {
 	loadUserProfile();
 });
 function loadUserProfile() {
-	fetch("/path/to/your/api") // 여기에 API 경로를 입력하세요.
-		.then((response) => response.json())
-		.then((userGameInfo) => {
-			userProfile.innerHTML = `
-                <h3>Member Number: <span>${userGameInfo.mno}</span></h3>
-                <h3>Name: <span>${userGameInfo.name}</span></h3>
-                <h3>ID: <span>${userGameInfo.id}</span></h3>
-                <h3>Email: <span>${userGameInfo.email}</span></h3>
-                <h3>regDate: <span>${userGameInfo.regDate}</span></h3>
-                <h3>Game record ID: <span>${userGameInfo.record_id}</span></h3>
-                <h3>Win: <span>${userGameInfo.win}</span></h3>
-                <h3>Lose: <span>${userGameInfo.lose}</span></h3>
-                <h3>Draw: <span>${userGameInfo.draw}</span></h3>
-                <h3>Last play date: <span>${userGameInfo.play_date}</span></h3>
+    fetch("/MyWebProject/principal")
+        .then((response) => response.json())
+        .then((data) => {
+            const user = data.user;
+            const gameRecord = data.game_record;
+
+            userProfile.innerHTML = `
+                <h3>나의 번호: <span>${user.mno}</span></h3>
+                <h3>이름: <span>${user.name}</span></h3>
+                <h3>아이디: <span>${user.id}</span></h3>
+                <h3>이메일: <span>${user.email}</span></h3>
+                <h3>가입한 날짜: <span>${user.regDate}</span></h3>
+                <h3>Game record ID: <span>${gameRecord.record_id}</span></h3>
+                <h3>승리: <span>${gameRecord.win}</span></h3>
+                <h3>패배: <span>${gameRecord.lose}</span></h3>
+                <h3>무승부: <span>${gameRecord.draw}</span></h3>
+                <h3>승률: <span>${gameRecord.odds}</span></h3>
+                <h3>마지막 플레이 시간: <span>${gameRecord.play_date}</span></h3>
             `;
-		})
-		.catch((error) => {
-			console.error("Error fetching user profile data:", error);
-		});
+        })
+        
+        .catch((error) => {
+            console.error("Error fetching user profile data:", error);
+        });
 }
+
 const createRoomModal = document.getElementById("createRoomModal");
 const createRoomBtn = document.querySelector(".btn");
 const closeModalBtn = document.querySelector(".modal-close");
@@ -107,37 +113,63 @@ window.onclick = (event) => {
 	}
 };
 
-function getRandomRoomNumber() {
-	return Math.floor(Math.random() * 1000);
-}
 
-function createRoomTitle(clientRoomTitle) {
-	const roomNumber = getRandomRoomNumber();
-	const roomTitle = `${clientRoomTitle}#${roomNumber}`;
-	return roomTitle;
-}
-// Create Room Button 클릭 이벤트
-document.getElementById("createRoomButton").addEventListener("click", () => {
-	const clientRoomTitle = document.getElementById("roomTitleInput").value;
-	const roomTitle = createRoomTitle(clientRoomTitle);
 
-	const roomLinkElem = document.getElementById("roomLink");
-	roomLinkElem.href = 'omokgame.jsp';
-	//roomLinkElem.href = `omokGame.html?roomTitle=${encodeURIComponent(roomTitle)}`;
+const createRoomButton = document.getElementById("createRoomButton");
+createRoomButton.addEventListener("click", () => {
+	createRoom(createRoomModal);
 });
 
-// URL에서 방 제목 가져오기
-function getRoomTitleFromUrl() {
-	const urlParams = new URLSearchParams(window.location.search);
-	const roomTitle = urlParams.get('roomTitle');
-	return roomTitle ? decodeURIComponent(roomTitle) : '';
+function createRoom(modal) {
+  const roomTitle = document.getElementById("roomTitleInput").value;
+  const password = document.getElementById("password").value;
+  const gameType = document.getElementById("gameType").value;
+  
+  $.ajax({
+    url: "createRoom",
+    type: "POST",
+    data: {
+      roomTitle: roomTitle,
+      password: password,
+      gameType: gameType
+    },
+    dataType: "json",
+    success: function(data) {
+      addGameRoomToList(data.roomTitle, data.gameType);
+      modal.style.display = "none";
+    },
+    error: function(xhr, status, error) {
+      console.error('Error creating room:', error);
+    }
+  });
+}
+function addGameRoomToList(roomTitle, gameType, id) {
+  const listBox = document.getElementById("listBox");
+
+  const gameRoomElement = document.createElement("div");
+  gameRoomElement.classList.add("gameRoomList");
+  gameRoomElement.setAttribute("data-room-id", id); // 게임방의 식별자를 저장합니다.
+
+  const roomTitleElement = document.createElement("span");
+  roomTitleElement.classList.add("userText");
+  roomTitleElement.innerText = roomTitle;
+
+  const gameTypeElement = document.createElement("span");
+  gameTypeElement.classList.add("userText");
+  gameTypeElement.innerText = gameType;
+
+  gameRoomElement.appendChild(roomTitleElement);
+  gameRoomElement.appendChild(gameTypeElement);
+
+  gameRoomElement.addEventListener("click", () => {
+    window.location.href = "omokgame.jsp?roomId=" + id;
+  });
+
+  listBox.appendChild(gameRoomElement);
 }
 
-// 표시할 방 제목 요소
-const roomTitleElem = document.createElement('div');
-roomTitleElem.innerText = getRoomTitleFromUrl();
-
 // 오목 게임 제목 요소 바로 아래에 표시
-const navElem = document.querySelector(".nav");
+/*const navElem = document.querySelector(".nav");
 navElem.parentNode.insertBefore(roomTitleElem, navElem.nextSibling);
 
+*/
