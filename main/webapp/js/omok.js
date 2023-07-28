@@ -119,12 +119,12 @@ function handleCellClick(row, col) {
 		  cell.classList.add('white');//WHITE면 'white' 클래스를 추가하여 돌이 보이게 함.  
 	  }
 
-    if (isGameOver()) {
+    /*if (isGameOver()) {
       alert(`Player ${currentPlayer === BLACK ? "1" : "2"} wins!`);
       /*현재 착수한 좌표를 기준으로 8 방향( ↗ ↙ ↖ ↘ → ← ↑ ↓)으로 오목이 되었는지 검사합니다. 
       연속된 5개의 돌이 나타나면 게임이 종료되어 그 순간 돌을 놓은 플레이어의 승리로 판단
-      승리했다면 경고창(alert으로).*/
-    }
+      승리했다면 경고창(alert으로).
+    }*/
     if (isGameOver()) {
       clearInterval(intervalId1);
       clearInterval(intervalId2);
@@ -166,4 +166,34 @@ function createBoard() {
 document.addEventListener("DOMContentLoaded", () => {
   createBoard();
   startTimer();
+  loadGameUserProfile();
 });
+
+const user1Info = document.getElementById("user1-info");
+const user1Name = document.getElementById("user1-name");
+
+function loadGameUserProfile() {
+    fetch("/MyWebProject/principal")
+        .then((response) => response.json())
+         console.log("Server response:", response)
+        .then((data) => {
+            const user = data.user;
+            const gameRecord = data.game_record;
+
+            user1Name.textContent = user.name;
+
+            const win = gameRecord.win;
+            const lose = gameRecord.lose;
+            const draw = gameRecord.draw;
+            const odds = gameRecord.odds.toFixed(2); // 결과를 소수점 두자리까지 표시
+
+            user1Info.innerHTML = `
+                <p>아이디: ${user.id}</p>
+                <p>승: ${win} / 패: ${lose} / 무승부: ${draw}</p>
+                <p>승률: ${odds}%</p>
+            `;
+        })
+        .catch((error) => {
+            console.error("Error fetching user profile data:", error);
+        });
+}
