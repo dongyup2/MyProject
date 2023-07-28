@@ -19,6 +19,8 @@ import vo.User;
 public class PrincipalServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    
+    
     protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         System.out.println("세션에 저장된 데이터 확인");
         HttpSession session = request.getSession();
@@ -33,7 +35,7 @@ public class PrincipalServlet extends HttpServlet {
         User user = (User) session.getAttribute("principal");
 
         // 게임 데이터는 데이터베이스에서 가져오기 --지금은 임시--
-        GameRecord gameRecord = new GameRecord(1, user.getMno(), 10, 5, 3, new Timestamp(System.currentTimeMillis()));
+        GameRecord gameRecord = new GameRecord(1, user.getMno(), 10, 5, 3,50.6, new Timestamp(System.currentTimeMillis()));
         System.out.println(user.getId() +"님의 게임 정보: " + gameRecord);
         JSONObject userGameInfoJson = new JSONObject();
         userGameInfoJson.put("user", new JSONObject(user));
