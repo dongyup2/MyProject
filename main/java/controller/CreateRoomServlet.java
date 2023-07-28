@@ -8,22 +8,23 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
 import config.ServletContextConfig;
+import services.GamePageService;
 import services.UserService;
+import vo.User;
 
-@WebServlet("/CreateRoomServlet")
+@WebServlet("/createRoom")
 public class CreateRoomServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private final UserService userService;
-	 private final RoomService roomService; // RoomService 추가
+	 private final GamePageService gamepageService; // RoomService 추가
 
-	    public CreateRoomServlet() {
-	        userService = ServletContextConfig.getInstance().getUserService();
-	        roomService = new RoomService(); // RoomService 인스턴스 생성
+	    public CreateRoomServlet() {   
+	    	gamepageService = ServletContextConfig.getInstance().getGamePageService(); // RoomService 인스턴스 생성
 	    }
 
 	    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -33,10 +34,13 @@ public class CreateRoomServlet extends HttpServlet {
 
 	        // 처리 결과 변수 초기화
 	        JSONObject result = new JSONObject();
-
+	        
 	        try {
+	        	HttpSession session = request.getSession();
+	        	User user = (User) session.getAttribute("principal");
+
 	            // Create room using roomService
-	            int roomId = roomService.createRoom(roomTitle, password, gameType);
+	            int roomId = gamepageService.createRoom(roomTitle, password, gameType, user.getId());
 
 	            // 성공적으로 방 생성
 	            result.put("status", "success");
@@ -55,7 +59,8 @@ public class CreateRoomServlet extends HttpServlet {
 
 	        // JSON 응답 반환
 	        try (PrintWriter out = response.getWriter()) {
-	            out.write(result.toJSONString());
+	        	out.write(result.toString());
+
 	        }
 	    }
 
