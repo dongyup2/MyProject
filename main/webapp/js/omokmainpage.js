@@ -121,53 +121,156 @@ createRoomButton.addEventListener("click", () => {
 });
 
 function createRoom(modal) {
-  const roomTitle = document.getElementById("roomTitleInput").value;
-  const password = document.getElementById("password").value;
-  const gameType = document.getElementById("gameType").value;
-  
-  $.ajax({
-    url: "createRoom",
-    type: "POST",
-    data: {
-      roomTitle: roomTitle,
-      password: password,
-      gameType: gameType
-    },
-    dataType: "json",
-    success: function(data) {
-      addGameRoomToList(data.roomTitle, data.gameType);
-      modal.style.display = "none";
-    },
-    error: function(xhr, status, error) {
-      console.error('Error creating room:', error);
+    const roomTitle = document.getElementById("roomTitleInput").value;
+    const password = document.getElementById("password").value;
+    const gameType = document.getElementById("gameType").value;
+
+    $.ajax({
+        url: "createRoomAndCheck",
+        type: "POST",
+        data: {
+            roomTitle: roomTitle,
+            password: password,
+            gameType: gameType
+        },
+        dataType: "json",
+        success: function(data) {
+            if (data.status === 'success') {
+                addGameRoomToList(data.roomId, data.roomTitle, data.gameType, data.userId, data.userName);
+                modal.style.display = "none";
+            } else {
+                // 방 생성 실패, 에러 메시지 표시
+                alert(data.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error creating room:', error);
+        }
+    });
+}
+
+function addGameRoomToList(roomId, roomTitle, gameType, userId, userName) {
+    const listBox = document.getElementById("listBox");
+
+    const gameRoomElement = document.createElement("div");
+    gameRoomElement.classList.add("gameRoomList");
+
+    const roomMnoElement = document.createElement("span");
+    roomMnoElement.classList.add("roomMno");
+    roomMnoElement.innerText = `#${roomId}`;
+
+    const roomTitleElement = document.createElement("span");
+    roomTitleElement.classList.add("roomTitle");
+    roomTitleElement.innerText = roomTitle;
+
+    const userDivElement = document.createElement("div");
+    userDivElement.classList.add("user2");
+
+    const userNameElement1 = document.createElement("span");
+    userNameElement1.classList.add("userName");
+    userNameElement1.setAttribute("name", "user1");
+    userNameElement1.innerText = userName;
+
+    const userNameElement2 = document.createElement("span");
+    userNameElement2.classList.add("userName");
+    userNameElement2.setAttribute("name", "user2");
+    // user2의 이름은 나중에 업데이트되어야 합니다.
+    userNameElement2.innerText = "";
+
+    userDivElement.appendChild(userNameElement1);
+    userDivElement.appendChild(userNameElement2);
+
+    const gameTypeElement = document.createElement("span");
+    gameTypeElement.classList.add("gameType");
+    gameTypeElement.innerText = gameType;
+
+    const userBtnElement = document.createElement("div");
+    userBtnElement.classList.add("userBtn");
+    userBtnElement.innerText = ">>";
+
+    gameRoomElement.appendChild(roomMnoElement);
+    gameRoomElement.appendChild(roomTitleElement);
+    gameRoomElement.appendChild(userDivElement);
+    gameRoomElement.appendChild(gameTypeElement);
+    gameRoomElement.appendChild(userBtnElement);
+
+    listBox.appendChild(gameRoomElement);
+}
+
+//  기존에 사용하셨던 AJAX 코드를 유지하고 변경 사항이 있을 때만 업데이트하는 기능을 추가해 보았습니다.
+
+/*function listCheck() {
+    console.log("실시간 방 목록 업데이트중...");
+
+    $.ajax({
+        url: "checkEmptyRoom",
+        type: "get",
+        dataType: "json",
+        success: function(data) {
+            if (isArraysDifferent(tempVOListInView, data)) {
+                // inViewList 는 현재 화면에 출력된 TempVO 리스트를 나타냅니다.
+                tempVOListInView = data; // 전체 업데이트
+                updateView(tempVOListInView);
+            }
+        }
+    });
+}*/
+
+// 함수 : 두 ArrayList 비교
+function isArraysDifferent(array1, array2) {
+    if (array1.length !== array2.length) {
+        return true;
     }
-  });
-}
-function addGameRoomToList(roomTitle, gameType, id) {
-  const listBox = document.getElementById("listBox");
-
-  const gameRoomElement = document.createElement("div");
-  gameRoomElement.classList.add("gameRoomList");
-  gameRoomElement.setAttribute("data-room-id", id); // 게임방의 식별자를 저장합니다.
-
-  const roomTitleElement = document.createElement("span");
-  roomTitleElement.classList.add("userText");
-  roomTitleElement.innerText = roomTitle;
-
-  const gameTypeElement = document.createElement("span");
-  gameTypeElement.classList.add("userText");
-  gameTypeElement.innerText = gameType;
-
-  gameRoomElement.appendChild(roomTitleElement);
-  gameRoomElement.appendChild(gameTypeElement);
-
-  gameRoomElement.addEventListener("click", () => {
-    window.location.href = "omokgame.jsp?roomId=" + id;
-  });
-
-  listBox.appendChild(gameRoomElement);
+    for (var i = 0; i < array1.length; i++) {
+        if (JSON.stringify(array1[i]) !== JSON.stringify(array2[i])) {
+            return true;
+        }
+    }
+    return false;
 }
 
+// DOM을 업데이트하는 함수입니다.
+function updateView(tempVOList) {
+    $(".gameRoomList").empty();
+    $.each(tempVOList, function (index, gameRoom) {
+        var gameRoomElem = '<div class="gameRoomList">';
+        // 나머지 HTML 요소를 추가하세요.
+        gameRoomElem += "</div>";
+
+        $(".gameRoomList").append(gameRoomElem);
+    });
+}
+
+
+
+var timer = setInterval(listCheck, 1000);
+
+function listCheck() {
+    console.log("실시간 방 목록 업데이트중...");
+
+    $.ajax({
+        url: "checkEmptyRoom",
+        type: "get",
+        dataType: "json",
+        success: function(data) {
+				console.log(data);
+            $('.gameRoomList').remove();
+            $.each(data, function(index, gameRoom) {
+                var gameRoomElem = '<div class="gameRoomList">' +
+                    '<span class="roomMno">' + gameRoom.roomMno + '</span>' +
+                    '<span class="roomTitle">' + gameRoom.roomTitle + '</span>' +
+                    '<div class="user2">' +
+                    '<span class="userName" name="user1">' + gameRoom.user1 + '</span>' +
+                    '<span class="userName" name="user2">' + gameRoom.user2 + '</span>' +
+                    '</div>' +
+                    '<div class="gameType"><span>' + gameRoom.gameType + '</span></div>' +
+                    '<div class="userBtn">>></div>' +
+                    '</div>';
+                $('#listBox').append(gameRoomElem);
+            });
+        }
+    });
+}
 // 오목 게임 제목 요소 바로 아래에 표시
 /*const navElem = document.querySelector(".nav");
 navElem.parentNode.insertBefore(roomTitleElem, navElem.nextSibling);
