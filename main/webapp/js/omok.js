@@ -166,34 +166,4 @@ function createBoard() {
 document.addEventListener("DOMContentLoaded", () => {
   createBoard();
   startTimer();
-  loadGameUserProfile();
 });
-
-const user1Info = document.getElementById("user1-info");
-const user1Name = document.getElementById("user1-name");
-
-function loadGameUserProfile() {
-    fetch("/MyWebProject/principal")
-        .then((response) => response.json())
-         console.log("Server response:", response)
-        .then((data) => {
-            const user = data.user;
-            const gameRecord = data.game_record;
-
-            user1Name.textContent = user.name;
-
-            const win = gameRecord.win;
-            const lose = gameRecord.lose;
-            const draw = gameRecord.draw;
-            const odds = gameRecord.odds.toFixed(2); // 결과를 소수점 두자리까지 표시
-
-            user1Info.innerHTML = `
-                <p>아이디: ${user.id}</p>
-                <p>승: ${win} / 패: ${lose} / 무승부: ${draw}</p>
-                <p>승률: ${odds}%</p>
-            `;
-        })
-        .catch((error) => {
-            console.error("Error fetching user profile data:", error);
-        });
-}
