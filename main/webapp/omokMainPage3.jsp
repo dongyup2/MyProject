@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -102,6 +103,12 @@ body {
 	width: 60%;
 	height: 100%;
 	padding-bottom: 15px;
+	
+	display: flex;
+	flex-direction: column;
+	justify-content: left;
+	align-items: center;
+	
 	overflow-y: scroll;
 }
 
@@ -170,7 +177,9 @@ body {
 	font-size: 14px;
 	font-weight: bold;
 }
-
+.gameType{
+	font-size: 13px;
+}
 .userBtn {
 	background-color: #D2DFF0;
 	width: 25px;
@@ -316,7 +325,7 @@ body {
 	margin: 15% auto;
 	padding: 20px;
 	border: 1px solid #888;
-	width: 80%;
+	width: 50%;
 }
 
 .modal-header {
@@ -345,6 +354,12 @@ body {
 	text-decoration: none;
 	cursor: pointer;
 }
+
+.community-window {
+  display: none;
+  width: 100%;
+  height: 100%;
+}
 </style>
 </head>
 <body>
@@ -352,7 +367,10 @@ body {
 		<div id="box">
 			<div id="nav">
 				<div class="btn">방만들기</div>
-				<div class="btn">#100...</div>
+				<select class="btn"><option>게임종류(2)</option>
+                            <option>일반 오목</option>
+                            <option>스피드 오목</option>
+                </select>
 				<div id="toggleBtn1" class="btn2">방 목록</div>
 				<div id="toggleBtn2" class="btn2">내정보</div>
 				<form action="logout" method="POST">
@@ -385,15 +403,18 @@ body {
 			</div>
 			<div id="mainBox">
 				<div id="listBox">
-					<div class="gameRoomList">
-						<span class="roomMno">#102</span>
-						 <span class="roomTitle">방제목</span>
+					<div class="gameRoomList">						
+						<span class="roomMno"></span>
+						 <span class="roomTitle"></span>
 						<div class="user2">
-							<span class="userName" name="user1"></span> <span
-								class="userName" name="user2">silver8532</span>
+							<span class="userName" name="user1"></span> 
+							<span class="userName" name="user2"></span>
 						</div>
-						<div class="userBtn">>></div>
-					</div>
+						<div class="gameType">
+							<span></span>
+						</div>
+						<div class="userBtn">>></div>				
+					</div>				
 				</div>
 				<div id="userBox">
 					<div class="userlist">
@@ -470,14 +491,14 @@ body {
 			</div>
 		</div>
 		<div id="chatMainbox">
-			<div class="temp"></div>
+			<!-- <div class="temp"></div> -->
 			<div class="chat">
 				<div class="live-viewers">Live 채팅방</div>
 				<div class="chat-window" id="chat-window">
 					<div class="chat-message other-message">
 						<img src="" alt="">
 						<div class="text">오목 할사람</div>
-					</div>
+<!-- 					</div>
 					<div class="chat-message other-message">
 						<img src="" alt="">
 						<div class="text">응 안해</div>
@@ -493,7 +514,7 @@ body {
 					<div class="chat-message my-message">
 						<img src="" alt="">
 						<div class="text">ㅎㅇ</div>
-					</div>
+					</div> -->
 					<div class="input-container">
 						<input type="text" id="message-input" placeholder="메세지를 입력해주세요..." />
 						<button id="send-button">전송</button>
@@ -502,7 +523,9 @@ body {
 			</div>
 		</div>
 	</div>
+	 <div id="communityWindow" class="community-window">
+  		
+  </div>
 	<script src="js/omokmainpage.js" type="text/javascript"></script>
-
 </body>
 </html>
