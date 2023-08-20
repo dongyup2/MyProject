@@ -2,6 +2,13 @@ const BOARD_SIZE = 15; // 보드판 크기
 const BLACK = "●"; // 흑돌
 const WHITE = "○"; // 백돌
 const TIMER_LIMIT = 301;//시간
+const user1 = "user1"; // 실제 로그인 정보를 사용해야 함.
+const user2 = "user2"; // 실제 로그인 정보를 사용해야 함.
+const currentPlayerInfo = {
+  [user1]: BLACK, // 유저1은 흑돌
+  [user2]: WHITE // 유저2는 백돌
+};
+let currentUser;
 
 let currentPlayer = BLACK; // 기본값 현재 플레이어 
 
@@ -104,27 +111,21 @@ function isGameOver() {// 게임이 종료되었는지, 즉 연속 5개의 돌�
   }
   return false;
 }
-
-//게임판의 셀을 클릭했을 때 동작하는 이벤트 처리 함수
+function onUserEnter() {
+  currentUser = user1; // 실제 로그인 정보를 사용해야 함.
+  currentPlayer = currentPlayerInfo[currentUser];
+}
 function handleCellClick(row, col) {
   if (isValidMove(row, col)) {
-    makeMove(row, col);/*게임판 상태 업데이트 (makeMove 함수 사용): 좌표가 유효한 경우, 현재 플레이어의 돌을 해당 좌표에 배치.
-    board 2차원 배열이 갱신.*/ 
+    makeMove(row, col);
     const cell = document.querySelector(`.board__row:nth-child(${row + 1}) .board__col:nth-child(${col + 1}) .col__grid`);
-    //게임판의 해당 셀에 플레이어의 돌을 그래픽적으로 표시. 
      
 	  if (currentPlayer === BLACK) {
-		  cell.classList.add('black');//이때 플레이어가 BLACK이면 셀에 'black' 클래스를 추가
+		  cell.classList.add('black');
 	  } else {
-		  cell.classList.add('white');//WHITE면 'white' 클래스를 추가하여 돌이 보이게 함.  
+		  cell.classList.add('white');  
 	  }
 
-    /*if (isGameOver()) {
-      alert(`Player ${currentPlayer === BLACK ? "1" : "2"} wins!`);
-      /*현재 착수한 좌표를 기준으로 8 방향( ↗ ↙ ↖ ↘ → ← ↑ ↓)으로 오목이 되었는지 검사합니다. 
-      연속된 5개의 돌이 나타나면 게임이 종료되어 그 순간 돌을 놓은 플레이어의 승리로 판단
-      승리했다면 경고창(alert으로).
-    }*/
     if (isGameOver()) {
       clearInterval(intervalId1);
       clearInterval(intervalId2);
@@ -132,11 +133,24 @@ function handleCellClick(row, col) {
     }
     currentPlayer = currentPlayer === BLACK ? WHITE : BLACK;
     document.getElementById("currentTurn").innerText = `Player ${currentPlayer === BLACK ? "1" : "2"}'s Turn`;
-    /*승리하지 않은 경우, 플레이어를 변경하고 현재 플레이어 차례를 화면에 업데이트
-     플레이어가 BLACK이었다면 WHITE로 바꾸고, WHITE면 BLACK으로 변경됩니다.*/
-     resetTimer();
+    resetTimer();
   }
+  
+  // 셀 클릭 시 좌표를 서버(서블릿)로 전송
+  $.ajax({
+    url: '/MyWebProject/OmokGameServlet', // 전송할 URL
+    type: 'POST',
+    data: { row: row, col: col }, // 전송할 데이터
+    success: function (response) {
+      console.log(row,col)
+    },
+    error: function (error) {
+      // 서버에서 오류가 발생한 경우 처리
+      console.error("Ajax 요청 중 오류 발생:", error);
+    }
+  });
 }
+
 
 
 function createBoard() {
@@ -163,7 +177,37 @@ function createBoard() {
     board.appendChild(boardRow);//이를 통해 오목판의 전체 격자 구조가 완성
   }
 }
+function checkIfBothPlayersEntered() {
+  $.ajax({
+    url: "/MyWebProject/ReadyToGameStartServlet",
+    type: "GET",
+    success(response) {
+      const { player1, player2 } = JSON.parse(response);
+      if (player1 && player2) {
+        document.getElementById("start-game-button").style.display = "block";
+      } else {
+        setTimeout(checkIfBothPlayersEntered, 1000); // 1초마다 플레이어 입장 상태를 확인합니다.
+      }
+    },
+    error(error) {
+      console.error("플레이어 입장 상태 확인 중 오류 발생:", error);
+    },
+  });
+}
+
+function onUserEnter() {
+  currentUser = user1; // 실제 로그인 정보를 사용해야 함.
+  currentPlayer = currentPlayerInfo[currentUser];
+  checkIfBothPlayersEntered();
+}
+
+function onGameStartButtonClick() {
+  document.getElementById("start-game-button").disabled = true;
+  startTimer();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   createBoard();
-  startTimer();
+  onUserEnter();
 });
+
