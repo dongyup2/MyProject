@@ -56,11 +56,12 @@ input[type="submit"] {
 <body>
 <div class="main-content">
     <h1>아이디 찾기</h1>
-    <form onsubmit="event.preventDefault(); findId();" method="post">
+   <form action="/MyWebProject/FindIdServlet" method="post">
     <label>닉네임: <input type="text" name="name"></label>
     <label>이메일: <input type="email" name="email"></label>
     <input type="submit" value="아이디 찾기">
-</form>
+    </form>
+    <a href="loginGuestPage.jsp">로그인 화면으로 가기</a>
 </div>
 <script>
 function validateInput() {
@@ -80,31 +81,6 @@ function validateInput() {
     return true;
 }
 
-function findId() {
-    if (validateInput()) {
-        const name = $("input[name='name']").val();
-        const email = $("input[name='email']").val();	
-
-        $.ajax({
-            url: "/MyWebProject/FindIdServlet",
-            type: "POST",
-            contentType: "application/json;charset=utf-8",
-            data: JSON.stringify({name: name, email: email}),
-            success: function(response) {
-                console.log("API Response: ", response);
-                if (response.result === "success") {
-                    alert("당신의 아이디는: " + response.id);
-                } else {
-                    alert("등록된 아이디가 없습니다!");
-                }
-            },
-            error: function() {
-                alert("서버와의 통신이 실패하였습니다.");
-            }
-        });
-
-    }
-}
 </script>
 </body>
 </html>
